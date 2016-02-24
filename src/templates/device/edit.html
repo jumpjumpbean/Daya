@@ -1,0 +1,68 @@
+{% extends "main.html" %}
+
+{% block mainHead %}
+
+	<title>编辑维修部品</title>
+
+{% endblock %}
+
+{% block mainBody %}
+
+		<div id="page-body" role="main" class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-8">
+                    <form role="form" class="form-horizontal" action="{{url_for('bp_device.edit', device_id=current_device.id)}}" id="edit_device_form" method="POST">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h4>编辑维修部品</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="hospital">所属医院：</label>
+                                <div class="col-sm-9"><input type="text" class="form-control" name="hospital" id="hospital" placeholder="请输入所属医院" value="{{ current_device.hospital }}"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="device_model">机型：</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="device_model" id="device_model" placeholder="请输入机型" value="{{ current_device.device_model }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="device_index">机身号：</label>
+                                <div class="col-sm-9"><input type="text" class="form-control" name="device_index" id="device_index" placeholder="请输入机身号" value="{{ current_device.device_index }}"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="owner">负责人：</label>
+                                <div class="col-sm-9"><input type="text" class="form-control" name="owner" id="owner" placeholder="请输入负责人" value="{{ current_device.owner }}"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="status">状态：</label>
+                                <div class="col-sm-9">
+                                    <select id="status" name="status" class="form-control" value="{{ current_device.status }}">
+                                        <option value="0">未处理</option>
+                                        <option value="1">受理</option>
+                                        <option value="2">报价等待</option>
+                                        <option value="3">零件等待</option>
+                                        <option value="4">修理中</option>
+                                        <option value="5">修理完成</option>
+                                        <option value="6">返回</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <div class="form-group">
+                                <div class="col-md-6 text-right">
+                                    <button id="edit_sub" type="button" class="btn btn-primary" onclick="$('#edit_device_form').submit()">保存</button>
+                                    <a class="btn btn-default" href="{{url_for('bp_device.index')}}">取消</a>
+                                </div>
+                                <div class="col-md-6"></div>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+		</div>
+
+{% endblock %}

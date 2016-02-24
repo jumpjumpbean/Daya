@@ -1,0 +1,88 @@
+{% extends "main.html" %}
+
+{% block mainHead %}
+
+	<title>维修部品一览</title>
+
+{% endblock %}
+
+{% block mainBody %}
+
+		<div id="list-period" class="content container panel panel-default" role="main">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <h3>
+                        维修部品列表
+                        <div class="pull-right hidden-xs">
+                            <a class="btn btn-primary" href="{{url_for('bp_device.create')}}">添加部品</a>
+                        </div>
+                    </h3>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>所属医院</th>
+                                <th>机型</th>
+                                <th>负责人</th>
+                                <th>状态</th>
+                                <th>更新时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for device in devices %}
+                            <tr>
+                                <td>
+                                    <a href="{{url_for('bp_device.show', device_id=device.id)}}">{{ device.hospital }}</a>
+                                </td>
+                                <td>{{ device.device_model }}</td>
+                                <td>{{ device.owner }}</td>
+                                <td>
+                                    {% if device.status == 0 %}
+                                        未处理
+                                    {% elif device.status == 1 %}
+                                        受理
+                                    {% elif device.status == 2 %}
+                                        报价等待
+                                    {% elif device.status == 3 %}
+                                        零件等待
+                                    {% elif device.status == 4 %}
+                                        修理中
+                                    {% elif device.status == 5 %}
+                                        修理完成
+                                    {% elif device.status == 6 %}
+                                        返回
+                                    {% else %}
+                                        无效状态
+                                    {% endif %}
+                                </td>
+                                <td>{{ device.update_time.strftime( '%Y-%m-%d %H:%M:%S') }}</td>
+                                <td>
+                                    <a class="btn btn-default" href="{{url_for('bp_device.edit', device_id=device.id)}}">编辑</a>
+                                    <button type="button" class="btn btn-danger" onclick="deleteDevice('{{ device.id }}')">删除</button>
+                                    <a class="hidden" id="{{ device.id }}" href="{{url_for('bp_device.delete', device_id=device.id)}}" onclick=""></a>
+                                    <!--<a class="btn btn-danger" href="{{url_for('bp_device.delete', device_id=device.id)}}">删除</a>-->
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {{ pagination.links }}
+                </div>
+            </div>
+		</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+    function deleteDevice(elementId){
+        confirmDlg("确定删除吗？", "warning", function(){
+            var a = document.getElementById(elementId);
+            a.click();
+        });
+    }
+</script>
+
+{% endblock %}

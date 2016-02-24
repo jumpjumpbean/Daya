@@ -1,0 +1,66 @@
+{% extends "main.html" %}
+
+{% block mainHead %}
+
+	<title>{{ show_user.name }}信息</title>
+
+{% endblock %}
+
+{% block mainBody %}
+
+    <div class="section prj-base">
+		<div id="show-user" class="content container inner" role="main">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h4>{{ show_user.name }}基本信息</h4></div>
+                <ul class="list-unstyled list-group">
+
+                    <li class="list-group-item row rmm">
+                        <span id="uname-label" class="col-xs-3 col-sm-3 col-md-2">用户姓名：</span>
+                        <span class="col-xs-9 col-sm-9 col-md-10" aria-labelledby="uname-label">{{ show_user.name }}</span>
+                    </li>
+
+                    <li class="list-group-item row rmm">
+                        <span id="account-label" class="col-xs-3 col-sm-3 col-md-2">登录帐号：</span>
+                        <span class="col-xs-9 col-sm-9 col-md-10" aria-labelledby="account-label">{{ show_user.account }}</span>
+                    </li>
+
+                    <li class="list-group-item row rmm">
+                        <span id="password-label" class="col-xs-3 col-sm-3 col-md-2">密码：</span>
+                        <span class="col-xs-9 col-sm-9 col-md-10" aria-labelledby="password-label"></span>
+                    </li>
+
+                    <li class="list-group-item row rmm">
+                        <span id="utype-label" class="col-xs-3 col-sm-3 col-md-2">用户类型：</span>
+                        <span class="col-xs-9 col-sm-9 col-md-10" aria-labelledby="utype-label">
+                            {% if show_user.type == 1 %}
+                                总部
+                            {% else %}
+                                办事处
+                            {% endif %}
+                        </span>
+                    </li>
+
+                    <li class="list-group-item row rmm">
+                        <span id="planEndDate-label" class="col-xs-3 col-sm-3 col-md-2">地址：</span>
+                        <span class="col-xs-9 col-sm-9 col-md-10" aria-labelledby="planEndDate-label">{{ show_user.address }}</span>
+                    </li>
+
+                    <li class="list-group-item row rmm">
+                        <span id="realStartDate-label" class="col-xs-3 col-sm-3 col-md-2">联系电话：</span>
+                        <span class="col-xs-9 col-sm-9 col-md-10" aria-labelledby="realStartDate-label">{{ show_user.telephone }}</span>
+                    </li>
+
+                    <li class="list-group-item row rmm">
+                        <span id="realEndDate-label" class="col-xs-3 col-sm-3 col-md-2">个人备注：</span>
+                        <span class="col-xs-9 col-sm-9 col-md-10" aria-labelledby="realEndDate-label">{{ show_user.description }}</span>
+                    </li>
+
+                </ul>
+                <div class="panel-footer">
+                    <a class="btn btn-default" href="{{url_for('bp_user.edit', user_id=show_user.id)}}">编辑用户基本信息</a>
+                </div>
+            </div>
+		</div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,136 @@
+{% extends "main.html" %}
+
+{% block mainHead %}
+
+	<title>编辑用户</title>
+
+{% endblock %}
+
+{% block body_attrs %} onload="selectIndex({{ edit_user.type }})" {% endblock %}
+
+{% block mainBody %}
+
+		<div id="page-body" role="main" class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-8">
+                    <form role="form" class="form-horizontal" action="{{url_for('bp_user.edit', user_id=edit_user.id)}}" id="edit_user_form" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h4>编辑{{ edit_user.name }}资料</h4>
+                            </div>
+                            {% include "_messages.html" %}
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="name">用户姓名</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="name" id="name" placeholder="请输入用户姓名" value="{{ form.name.data }}">
+                                        {% if form.name.errors %}
+                                            {% for message in form.name.errors %}
+                                                <span class="text-danger help-inline">{{ message }}</span>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="account">登录帐号</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="account" id="account" placeholder="请输入帐号" value="{{ form.account.data }}">
+                                        {% if form.account.errors %}
+                                            {% for message in form.account.errors %}
+                                                <span class="text-danger help-inline">{{ message }}</span>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">密码</label>
+                                    <div class="col-sm-9">
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#setPasswdDlg">重置密码</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="type">用户类型</label>
+                                    <div class="col-sm-9">
+                                        <select id="type" name="type"  class="form-control" value="{{ form.type.data }}">
+                                            <option value="0">办事处</option>
+                                            <option value="1">总部</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="address">地址</label>
+                                    <div class="col-sm-9"><input type="text" class="form-control" name="address" id="address" placeholder="请输入地址" value="{{ form.address.data }}"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="telephone">联系电话</label>
+                                    <div class="col-sm-9"><input type="text" class="form-control" name="telephone" id="telephone" placeholder="请输入电话" value="{{ form.telephone.data }}"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="description">个人备注</label>
+                                    <div class="col-sm-9"><input type="text" class="form-control" name="description" id="description" placeholder="请输入个人备注" value="{{ form.description.data }}"></div>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="form-group">
+                                    <div class="col-md-6 text-right">
+                                        <button id="edit_sub" type="button" class="btn btn-primary" onclick="$('#edit_user_form').submit()">保存</button>
+                                        <a class="btn btn-default" href="{{url_for('bp_user.index')}}">取消</a>
+                                    </div>
+                                    <div class="col-md-6"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="setPasswdDlg">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">重置密码</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <label for="pswdpop" class="col-sm-3 control-label">新密码</label>
+                                            <div class="col-sm-9">{{ form.pswdpop(class='form-control') }}</div>
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+                                            <label for="confirmpop" class="col-sm-3 control-label">再次输入新密码</label>
+                                            <div class="col-sm-9">
+                                                {{ form.confirmpop(class='form-control') }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="clearPass()">取消</button>
+                                        <button type="button" data-loading-text="处理中..." class="btn btn-primary" onclick="passwordConfirm()">确定</button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+		</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+    function clearPass(){
+        document.getElementById("pswdpop").value = "";
+        document.getElementById("confirmpop").value = "";
+    }
+
+    function selectIndex(user_type){
+        var s = document.getElementById("type");
+        for(var i=0;i<s.length;i++){
+            if(user_type==s.options[i].value){
+                s.options[i].selected=true
+            }
+        }
+    }
+</script>
+
+{% endblock %}

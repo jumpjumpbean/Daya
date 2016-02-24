@@ -1,0 +1,72 @@
+{% extends "main.html" %}
+
+{% block mainHead %}
+
+	<title>维修部品信息</title>
+
+{% endblock %}
+
+{% block mainBody %}
+
+    <div class="section prj-base">
+		<div id="show-device" class="content container inner" role="main">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h4>维修部品信息</h4></div>
+                <ul class="list-unstyled list-group">
+                    <li class="list-group-item row rmm">
+                        <span id="hospital-label" class="col-xs-3 col-sm-3 col-md-2">所属医院：</span>
+                        <span class="col-xs-9 col-sm-9 col-md-10" aria-labelledby="hospital-label">{{ current_device.hospital }}</span>
+                    </li>
+
+                    <li class="list-group-item row rmm">
+                        <span id="device_model-label" class="col-xs-3 col-sm-3 col-md-2">机型：</span>
+                        <span class="col-xs-9 col-sm-9 col-md-10" aria-labelledby="device_model-label">{{ current_device.device_model }}</span>
+                    </li>
+
+                    <li class="list-group-item row rmm">
+                        <span id="device_index-label" class="col-xs-3 col-sm-3 col-md-2">机身号：</span>
+                        <span class="col-xs-9 col-sm-9 col-md-10" aria-labelledby="device_index-label">{{ current_device.device_index }}</span>
+                    </li>
+
+                    <li class="list-group-item row rmm">
+                        <span id="owner-label" class="col-xs-3 col-sm-3 col-md-2">负责人：</span>
+                        <span class="col-xs-9 col-sm-9 col-md-10" aria-labelledby="owner-label">{{ current_device.owner }}</span>
+                    </li>
+
+                    <li class="list-group-item row rmm">
+                        <span id="status-label" class="col-xs-3 col-sm-3 col-md-2">状态：</span>
+                        <span class="col-xs-9 col-sm-9 col-md-10" aria-labelledby="status-label">
+                            {% if current_device.status == 0 %}
+                                未处理
+                            {% elif current_device.status == 1 %}
+                                受理
+                            {% elif current_device.status == 2 %}
+                                报价等待
+                            {% elif current_device.status == 3 %}
+                                零件等待
+                            {% elif current_device.status == 4 %}
+                                修理中
+                            {% elif current_device.status == 5 %}
+                                修理完成
+                            {% elif current_device.status == 6 %}
+                                返回
+                            {% else %}
+                                无效状态
+                            {% endif %}
+                        </span>
+                    </li>
+
+                    <li class="list-group-item row rmm">
+                        <span id="update_time-label" class="col-xs-3 col-sm-3 col-md-2">更新时间：</span>
+                        <span class="col-xs-9 col-sm-9 col-md-10" aria-labelledby="update_time-label">{{ current_device.update_time.strftime( '%Y-%m-%d %H:%M:%S') }}</span>
+                    </li>
+
+                </ul>
+                <div class="panel-footer">
+                    <a class="btn btn-default" href="{{url_for('bp_device.edit', device_id=current_device.id)}}">编辑维修部品信息</a>
+                </div>
+            </div>
+		</div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "main.html" %}
+
+{% block mainHead %}
+
+	<title>用户管理</title>
+
+{% endblock %}
+
+{% block mainBody %}
+
+		<div id="list-period" class="content container panel panel-default" role="main">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <h3>
+                        用户列表
+                        <div class="pull-right hidden-xs">
+                            <a class="btn btn-primary" href="{{url_for('bp_user.create')}}">创建新用户</a>
+                        </div>
+                    </h3>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>账号</th>
+                                <th>用户名</th>
+                                <th>角色</th>
+                                <th>备注</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>
+                                    <a href="{{url_for('bp_user.show', user_id=user.id)}}">{{ user.account }}</a>
+                                </td>
+                                <td>{{ user.name }}</td>
+                                <td>
+                                    {% if user.type == 1 %}
+                                        总部
+                                    {% else %}
+                                        办事处
+                                    {% endif %}
+                                </td>
+                                <td>{{ user.description }}</td>
+                                <td>
+                                    <a class="btn btn-default" href="{{url_for('bp_user.edit', user_id=user.id)}}">编辑</a>
+                                    <button type="button" class="btn btn-danger" onclick="deleteUser('{{ user.id }}')">删除</button>
+                                    <a class="hidden" id="{{ user.id }}" href="{{url_for('bp_user.delete', user_id=user.id)}}" onclick=""></a>
+                                    <!--<a class="btn btn-danger" href="{{url_for('bp_user.delete', user_id=user.id)}}" onclick="return confirm('确定删除吗？')">删除</a>-->
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {{ pagination.links }}
+                </div>
+            </div>
+		</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+    function deleteUser(elementId){
+        confirmDlg("确定删除吗？", "warning", function(){
+            var a = document.getElementById(elementId);
+            a.click();
+        });
+    }
+</script>
+
+{% endblock %}

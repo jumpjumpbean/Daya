@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+    <head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="content-language" content="zh-CN"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=10; IE=9; IE=8; IE=7; IE=EDGE,chrome=1">
+        <!--[if lt IE 9]>
+            <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+            <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <!--
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        -->
+        <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/daya.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/mobile.css')}}">
+        {% block mainHead %}
+
+        <title>Daya System</title>
+        <meta name="description" content="">
+
+        {% endblock %}
+    </head>
+  <body {% block body_attrs %}{% endblock %}>
+
+    {% block mainNavbar %}
+        <div class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+            <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" role="navigation" style="height: 1px;">
+            <ul id="admin_menu" class="nav navbar-nav">
+                <li><a href="{{url_for('bp_device.index')}}" class="dropdown-toggle">维修部品管理</a></li>
+                {% if current_user.is_admin %}
+                    <li><a href="{{url_for('bp_user.index')}}" class="dropdown-toggle">用户管理</a></li>
+                {% endif %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{url_for('bp_user.show', user_id=current_user.id)}}">你好，{{ current_user.name }}</a></li>
+                <li id="logout"><a href="{{url_for('bp_auth.logout')}}">退出</a></li>
+            </ul>
+            </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block mainBody %}{% endblock %}
+
+	<div class="footer" role="contentinfo"></div>
+
+    <script src="{{url_for('static', filename='js/jquery-2.1.4.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/daya.js')}}"></script>
+    <script src="{{url_for('static', filename='js/dlg.js')}}"></script>
+    {% block scripts %}{% endblock %}
+
+    </body>
+</html>
